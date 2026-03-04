@@ -28,7 +28,7 @@ else:
     genai.configure(api_key=api_key)
     _old_model = genai.GenerativeModel("gemini-1.5-flash")
     def _generate(prompt):
-        return _old__generate(prompt).text
+        return _old_model.generate_content(prompt).text
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
