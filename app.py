@@ -1,5 +1,10 @@
 import streamlit as st
-import google.generativeai as genai
+try:
+    from google import genai as genai_new
+    USE_NEW_SDK = True
+except ImportError:
+    import google.generativeai as genai
+    USE_NEW_SDK = False
 import pandas as pd
 import json
 import io
@@ -15,8 +20,15 @@ load_dotenv()
 st.set_page_config(page_title="Logistics Billing Checker", page_icon="🚚", layout="wide")
 
 api_key = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY", "")
-genai.configure(api_key=api_key)
-model = genai.GenerativeModel("gemini-1.5-flash")
+if USE_NEW_SDK:
+    _client = genai_new.Client(api_key=api_key)
+    def _generate(prompt):
+        return _client.models.generate_content(model="gemini-1.5-flash", contents=prompt).text
+else:
+    genai.configure(api_key=api_key)
+    _old_model = genai.GenerativeModel("gemini-1.5-flash")
+    def _generate(prompt):
+        return _old__generate(prompt).text
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -26,8 +38,31 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 @st.cache_data
 def load_pincode_db():
     if os.path.exists("pincode_db.csv"):
-        df = pd.read_csv("pincode_db.csv", dtype={"pincode": str})
-        df["pincode"] = df["pincode"].str.zfill(6)
+        df = pd.read_csv("pincode_db.csv", dtype=str, nrows=1)
+        cols = [c.lower().strip() for c in df.columns]
+        # Detect pincode column — handles Kaggle CSVs with different headers
+        pincode_col = next((df.columns[i] for i, c in enumerate(cols)
+                           if c in ["pincode", "pin", "pin_code", "postalcode",
+                                    "postal_code", "pincodeno", "pin code"]), None)
+        if pincode_col is None:
+            return {}  # can not find pincode column — skip DB
+        df = pd.read_csv("pincode_db.csv", dtype=str)
+        df = df.rename(columns={pincode_col: "pincode"})
+        # Detect state/district columns
+        col_map = {}
+        for orig_col in df.columns:
+            lc = orig_col.lower().strip()
+            if lc in ["statename", "state_name", "state", "statecode"]:
+                col_map[orig_col] = "state"
+            elif lc in ["districtname", "district_name", "district", "taluk"]:
+                col_map[orig_col] = "district"
+            elif lc in ["officename", "office_name", "officetype", "office"]:
+                col_map[orig_col] = "office"
+        df = df.rename(columns=col_map)
+        # Keep only useful columns
+        keep = [c for c in ["pincode","state","district","office"] if c in df.columns]
+        df = df[keep].drop_duplicates("pincode")
+        df["pincode"] = df["pincode"].str.strip().str.zfill(6)
         return df.set_index("pincode").to_dict("index")
     return {}
 
@@ -415,23 +450,23 @@ def safe_json(text):
                     return json.loads(text[s:e+1])
                 except:
                     pass
-    fix = model.generate_content(f"Fix this broken JSON, return only valid JSON:\n{text[:3000]}")
-    return json.loads(re.sub(r"```json|```", "", fix.text.strip()).strip())
+    fix = _generate(f"Fix this broken JSON, return only valid JSON:\n{text[:3000]}")
+    return json.loads(re.sub(r"```json|```", "", fix.strip()).strip())
 
 
 def ai_extract_invoice(content):
     all_items = []
     for chunk in [content[i:i+50000] for i in range(0, len(content), 50000)]:
-        r = model.generate_content(f"{INV_PROMPT}\n\nDATA:\n{chunk}")
-        parsed = safe_json(r.text)
+        r = _generate(f"{INV_PROMPT}\n\nDATA:\n{chunk}")
+        parsed = safe_json(r)
         if isinstance(parsed, list):
             all_items.extend(parsed)
     return all_items
 
 
 def ai_extract_contract(content):
-    r = model.generate_content(f"{CON_PROMPT}\n\nCONTRACT:\n{content}")
-    return safe_json(r.text)
+    r = _generate(f"{CON_PROMPT}\n\nCONTRACT:\n{content}")
+    return safe_json(r)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
