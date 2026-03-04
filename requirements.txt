@@ -1,0 +1,6 @@
+echo "streamlit
+google-generativeai
+pandas
+openpyxl
+pdfplumber
+python-dotenv" > requirements.txt

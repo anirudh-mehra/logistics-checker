@@ -1,0 +1,45 @@
+{
+  "provider": "Delhivery",
+  "zones": {
+    "A": {
+      "upto_500g": 38,
+      "500g_to_1kg": 42,
+      "per_kg_above_1kg": 20
+    },
+    "B": {
+      "upto_500g": 42,
+      "500g_to_1kg": 47,
+      "per_kg_above_1kg": 22
+    },
+    "C": {
+      "upto_500g": 48,
+      "500g_to_1kg": 54,
+      "per_kg_above_1kg": 26
+    },
+    "D": {
+      "upto_500g": 55,
+      "500g_to_1kg": 62,
+      "per_kg_above_1kg": 30
+    },
+    "E": {
+      "upto_500g": 65,
+      "500g_to_1kg": 74,
+      "per_kg_above_1kg": 35
+    }
+  },
+  "rto_rates": {
+    "A": 30,
+    "B": 35,
+    "C": 40,
+    "D": 45,
+    "E": 55
+  },
+  "cod_fee_percent": 1.5,
+  "cod_fee_minimum": 25,
+  "contracted_surcharges": [
+    "fuel_surcharge",
+    "docket_charge",
+    "oda_charge"
+  ],
+  "weight_tolerance_kg": 0.05
+}
