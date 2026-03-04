@@ -1,0 +1,46 @@
+{
+  "provider": "Shadowfax",
+  "zones": {
+    "A": {
+      "upto_500g": 32,
+      "500g_to_1kg": 36,
+      "per_kg_above_1kg": 16
+    },
+    "B": {
+      "upto_500g": 36,
+      "500g_to_1kg": 41,
+      "per_kg_above_1kg": 18
+    },
+    "C": {
+      "upto_500g": 42,
+      "500g_to_1kg": 48,
+      "per_kg_above_1kg": 22
+    },
+    "D": {
+      "upto_500g": 50,
+      "500g_to_1kg": 57,
+      "per_kg_above_1kg": 26
+    },
+    "E": {
+      "upto_500g": 60,
+      "500g_to_1kg": 69,
+      "per_kg_above_1kg": 31
+    }
+  },
+  "rto_rates": {
+    "A": 26,
+    "B": 30,
+    "C": 35,
+    "D": 40,
+    "E": 48
+  },
+  "cod_fee_percent": 1.0,
+  "cod_fee_minimum": 20,
+  "contracted_surcharges": [
+    "fuel_surcharge",
+    "docket_charge"
+  ],
+  "weight_slab_rounding": "ceil_500g",
+  "weight_tolerance_kg": 0.05,
+  "dimensional_weight_divisor": null
+}

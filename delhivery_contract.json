@@ -41,5 +41,7 @@
     "docket_charge",
     "oda_charge"
   ],
-  "weight_tolerance_kg": 0.05
+  "weight_slab_rounding": "ceil_500g",
+  "weight_tolerance_kg": 0.05,
+  "dimensional_weight_divisor": null
 }

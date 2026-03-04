@@ -1,0 +1,46 @@
+{
+  "provider": "BlueDart",
+  "zones": {
+    "A": {
+      "upto_500g": 55,
+      "500g_to_1kg": 65,
+      "per_kg_above_1kg": 30
+    },
+    "B": {
+      "upto_500g": 62,
+      "500g_to_1kg": 74,
+      "per_kg_above_1kg": 34
+    },
+    "C": {
+      "upto_500g": 72,
+      "500g_to_1kg": 86,
+      "per_kg_above_1kg": 40
+    },
+    "D": {
+      "upto_500g": 85,
+      "500g_to_1kg": 102,
+      "per_kg_above_1kg": 48
+    },
+    "E": {
+      "upto_500g": 100,
+      "500g_to_1kg": 120,
+      "per_kg_above_1kg": 56
+    }
+  },
+  "rto_rates": {
+    "A": 45,
+    "B": 52,
+    "C": 62,
+    "D": 73,
+    "E": 86
+  },
+  "cod_fee_percent": 1.75,
+  "cod_fee_minimum": 30,
+  "contracted_surcharges": [
+    "fuel_surcharge",
+    "docket_charge"
+  ],
+  "weight_slab_rounding": "ceil_500g",
+  "weight_tolerance_kg": 0.1,
+  "dimensional_weight_divisor": 5000
+}

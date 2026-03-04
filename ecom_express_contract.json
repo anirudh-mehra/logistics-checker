@@ -1,0 +1,47 @@
+{
+  "provider": "Ecom Express",
+  "zones": {
+    "A": {
+      "upto_500g": 35,
+      "500g_to_1kg": 39,
+      "per_kg_above_1kg": 18
+    },
+    "B": {
+      "upto_500g": 39,
+      "500g_to_1kg": 44,
+      "per_kg_above_1kg": 20
+    },
+    "C": {
+      "upto_500g": 44,
+      "500g_to_1kg": 50,
+      "per_kg_above_1kg": 24
+    },
+    "D": {
+      "upto_500g": 52,
+      "500g_to_1kg": 59,
+      "per_kg_above_1kg": 28
+    },
+    "E": {
+      "upto_500g": 62,
+      "500g_to_1kg": 71,
+      "per_kg_above_1kg": 33
+    }
+  },
+  "rto_rates": {
+    "A": 28,
+    "B": 32,
+    "C": 37,
+    "D": 43,
+    "E": 52
+  },
+  "cod_fee_percent": 1.25,
+  "cod_fee_minimum": 22,
+  "contracted_surcharges": [
+    "fuel_surcharge",
+    "docket_charge",
+    "oda_charge"
+  ],
+  "weight_slab_rounding": "ceil_500g",
+  "weight_tolerance_kg": 0.05,
+  "dimensional_weight_divisor": null
+}

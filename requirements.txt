@@ -1,6 +1,7 @@
-echo "streamlit
+streamlit
 google-generativeai
 pandas
 openpyxl
 pdfplumber
-python-dotenv" > requirements.txt
+python-dotenv
+requests
