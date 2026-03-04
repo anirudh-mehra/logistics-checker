@@ -1,10 +1,5 @@
 import streamlit as st
-try:
-    from google import genai as genai_new
-    USE_NEW_SDK = True
-except ImportError:
-    import google.generativeai as genai
-    USE_NEW_SDK = False
+from google import genai as genai_client
 import pandas as pd
 import json
 import io
@@ -20,15 +15,15 @@ load_dotenv()
 st.set_page_config(page_title="Logistics Billing Checker", page_icon="🚚", layout="wide")
 
 api_key = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY", "")
-if USE_NEW_SDK:
-    _client = genai_new.Client(api_key=api_key)
-    def _generate(prompt):
-        return _client.models.generate_content(model="gemini-1.5-flash", contents=prompt).text
-else:
-    genai.configure(api_key=api_key)
-    _old_model = genai.GenerativeModel("gemini-1.5-flash")
-    def _generate(prompt):
-        return _old_model.generate_content(prompt).text
+api_key = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY", "")
+_client = genai_client.Client(api_key=api_key)
+
+def _generate(prompt):
+    response = _client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt
+    )
+    return response.text
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
